@@ -20,6 +20,7 @@
                     <el-button type="primary" @click="login('loginRef')">登录</el-button>
                     <el-button type="info" @click="resetLogin('loginRef')">重置</el-button>
                 </el-form-item>
+
             </el-form>
         </div>
     </div>
