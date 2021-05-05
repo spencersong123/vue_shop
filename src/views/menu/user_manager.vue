@@ -57,11 +57,11 @@
             <el-pagination
                     @size-change="handleUserSizeChange"
                     @current-change="handleUserCurrentChange"
-                    :current-page="this.queryInfo.pagenum"
+                    :current-page="queryInfo.pagenum"
                     :page-sizes="[2, 3, 5, 10]"
-                    :page-size="this.queryInfo.pagesize"
+                    :page-size="queryInfo.pagesize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="this.queryInfo.totalCnt">
+                    :total="queryInfo.totalCnt">
             </el-pagination>
         </el-card>
 
