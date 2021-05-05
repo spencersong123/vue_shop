@@ -21,36 +21,32 @@
             <el-table :data="userInfoList" style="width: 100%" border highlight-current-row>
                 <el-table-column type="index"></el-table-column>
 
-                <el-table-column prop="role_name" label="角色名" width="140px" align='center'></el-table-column>
                 <el-table-column prop="username" label="用户名" width="140px" align='center'></el-table-column>
-                <el-table-column prop="create_time" label="创建时间" width="140px" align='center'></el-table-column>
                 <el-table-column prop="mobile" label="联系电话" align='center'></el-table-column>
                 <el-table-column prop="email" label="邮箱" align='center'></el-table-column>
+                <el-table-column prop="role_name" label="角色" align="center"></el-table-column>
                 <el-table-column label="状态" align="center" width="100px">
                     <template slot-scope="scope">
                         <el-switch v-model="scope.row.mg_state"
                                    @change="statusChangeHandler($event, scope)"></el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作" align="center" width="350px">
                     <template slot-scope="scope">
                         <el-row :gutter="60">
                             <el-col :span="6">
-                                <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
-                                    <el-button type="primary" icon="el-icon-edit" size="mini"
-                                               @click="editUser(scope.row.id)"></el-button>
-                                </el-tooltip>
+                                <el-button type="primary" icon="el-icon-edit" @click="editUser(scope.row.id)">编辑
+                                </el-button>
                             </el-col>
                             <el-col :span="6">
-                                <!--                                <el-tooltip class="item" effect="dark" content="删除" placement="top-start">-->
-                                <el-button type="danger" icon="el-icon-delete" size="mini"
-                                           @click="deleteUser(scope.row.id, scope.row.username)"></el-button>
-                                <!--                                </el-tooltip>-->
+                                <el-button type="danger" icon="el-icon-delete"
+                                           @click="deleteUser(scope.row.id, scope.row.username)">删除
+                                </el-button>
                             </el-col>
                             <el-col :span="6">
-                                <el-tooltip class="item" effect="dark" content="分配权限" placement="top-start">
-                                    <el-button type="success" icon="el-icon-s-tools" size="mini"></el-button>
-                                </el-tooltip>
+                                <el-button type="success" icon="el-icon-s-tools" @click="deliverRoleClick(scope.row)">
+                                    分配角色
+                                </el-button>
                             </el-col>
                         </el-row>
                     </template>
@@ -107,8 +103,27 @@
                 </el-form-item>
 
                 <el-form-item>
+                    <el-button type="info" @click="userEditSwitch = false">取消</el-button>
                     <el-button type="primary" @click="editUserSubmit('userEditRef')">确认修改</el-button>
                     <el-button @click="resetEditUserForm('userEditRef')" type="warning">重置</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
+        <el-dialog title="分配角色" :visible.sync="deliverRoleSwitch">
+            <el-form :data="userDeliverInfo">
+                <el-form-item label="当前的用户:"><span>{{userDeliverInfo.username}}</span></el-form-item>
+                <el-form-item label="当前的角色:"><span>{{userDeliverInfo.role_name}}</span></el-form-item>
+                <el-form-item label="分配新角色:">
+                    <el-select v-model="userDeliverInfo.selectRole" placeholder="请选择角色" @change="$forceUpdate()">
+                        <el-option v-for="item in userDeliverInfo.roleList" :key="item.id" :label="item.roleName"
+                                   :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="info" @click="deliverRoleSwitch = false">取消</el-button>
+                    <el-button type="primary" @click="editRoleComfirm">确认</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -137,6 +152,7 @@
                     email: "1028495632@qq.com",
                 },
                 userAddSwitch: false,
+                deliverRoleSwitch: false,
                 userAddRule: {
                     username: [
                         {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -160,6 +176,7 @@
                 },
                 userEditInfo: {},
                 userEditSwitch: false,
+                userDeliverInfo: {},
 
             }
         },
@@ -268,8 +285,35 @@
                     this.$message.info("已取消删除");
                 });
             },
-            search(){
+            search() {
                 this.getUserList();
+            },
+            async deliverRoleClick(userInfo) {
+                this.userDeliverInfo = userInfo;
+                const {data: res} = await this.$http.get("roles");
+                if (res.meta.status !== 200) {
+                    this.$message.error("获取角色列表失败!");
+                    return;
+                }
+                let roleList = [];
+                res.data.forEach(item => {
+                    roleList.push(item);
+                });
+                this.userDeliverInfo.roleList = roleList;
+                this.userDeliverInfo.selectRole = '';
+                this.deliverRoleSwitch = true;
+            },
+            async editRoleComfirm() {
+                // users/:id/role
+                const {data: res} = await this.$http.put(`users/${this.userDeliverInfo.id}/role`, {"rid": this.userDeliverInfo.selectRole});
+                console.log(res);
+                if (res.meta.status !== 200) {
+                    this.$message.error("角色分配失败!");
+                    return;
+                }
+                this.$message.success("角色分配成功");
+                this.getUserList();
+                this.deliverRoleSwitch = false;
             }
         }
     }
@@ -294,5 +338,9 @@
 
     .el-pagination {
         padding-top: 30px;
+    }
+
+    .el-button {
+        margin-right: 10px;
     }
 </style>

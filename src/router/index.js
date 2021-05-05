@@ -4,6 +4,8 @@ import Login from "../views/login.vue"
 import Home from "../views/home.vue"
 import Welcome from "../views/welcome.vue"
 import UserManager from "../views/menu/user_manager.vue"
+import RightManager from "../views/menu/right_manager.vue"
+import RoleManager from "../views/menu/role_manager.vue"
 
 Vue.use(VueRouter);
 
@@ -13,6 +15,8 @@ Vue.use(VueRouter);
     {path:"/home", redirect:"/welcome", component: Home, children:[
         {path:"/welcome", component:Welcome},
         {path:"/users", component:UserManager},
+        {path:"/rights", component:RightManager},
+        {path:"/roles", component:RoleManager},
       ]},
 ];
 
