@@ -7,6 +7,7 @@ import UserManager from "../views/menu/user_manager.vue"
 import RightManager from "../views/menu/right_manager.vue"
 import RoleManager from "../views/menu/role_manager.vue"
 import GoodsCategory from "../views/goods/goods_category.vue"
+import CategoryArgs from "../views/goods/category_args.vue"
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,7 @@ Vue.use(VueRouter);
         {path:"/rights", component:RightManager},
         {path:"/roles", component:RoleManager},
         {path:"/categories", component:GoodsCategory},
+        {path:"/params", component:CategoryArgs},
       ]},
 ];
 
