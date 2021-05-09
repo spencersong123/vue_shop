@@ -11,6 +11,7 @@ import CategoryArgs from "../views/goods/category_args.vue"
 import GoodsList from "../views/goods/goods_list.vue"
 import AddGood from "../views/goods/add_good.vue"
 import Orders from "../views/orders/order_list.vue"
+import Report from "../views/report/report.vue"
 
 Vue.use(VueRouter);
 
@@ -26,7 +27,8 @@ Vue.use(VueRouter);
         {path:"/params", component:CategoryArgs},
         {path:"/goods", component:GoodsList},
         {path:"/goods/add", component:AddGood},
-        {path:"/goods/orders", component:Orders},
+        {path:"/orders", component:Orders},
+        {path:"/reports", component:Report},
       ]},
 ];
 
