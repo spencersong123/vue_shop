@@ -23,8 +23,8 @@ Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 Vue.filter("dateFormat", function (original) {
-  const dt = new Date(original);
-  return dt.toDateString()
+    let date = new Date(original*1000 + 8 * 3600 * 1000); // 增加8小时
+    return date.toJSON().substr(0, 19).replace('T', ' ');
 });
 
 Vue.use(ElementUI);
