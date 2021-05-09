@@ -8,6 +8,8 @@ import RightManager from "../views/menu/right_manager.vue"
 import RoleManager from "../views/menu/role_manager.vue"
 import GoodsCategory from "../views/goods/goods_category.vue"
 import CategoryArgs from "../views/goods/category_args.vue"
+import GoodsList from "../views/goods/goods_list.vue"
+import AddGood from "../views/goods/add_good.vue"
 
 Vue.use(VueRouter);
 
@@ -21,6 +23,8 @@ Vue.use(VueRouter);
         {path:"/roles", component:RoleManager},
         {path:"/categories", component:GoodsCategory},
         {path:"/params", component:CategoryArgs},
+        {path:"/goods", component:GoodsList},
+        {path:"/goods/add", component:AddGood},
       ]},
 ];
 
