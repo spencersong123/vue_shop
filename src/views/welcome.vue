@@ -1,5 +1,5 @@
 <template>
-    <h3>welcome</h3>
+    <h3>欢迎您,jsh</h3>
 </template>
 
 <script>
